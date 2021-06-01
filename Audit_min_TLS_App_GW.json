@@ -1,0 +1,57 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allof": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Network/applicationGateways"
+        },
+        {
+          "anyOf": [
+            {
+              "allof": [
+                {
+                  "field": "Microsoft.Network/applicationGateways/sslPolicy.policyType",
+                  "equals": "Custom"
+                },
+                {
+                  "field": "Microsoft.Network/applicationGateways/sslPolicy.minProtocolVersion",
+                  "notEquals": "TLSv1_2"
+                }
+              ]
+            },
+            {
+              "allof": [
+                {
+                  "field": "Microsoft.Network/applicationGateways/sslPolicy.policyType",
+                  "equals": "Predefined"
+                },
+                {
+                  "field": "Microsoft.Network/applicationGateways/sslPolicy.policyName",
+                  "notEquals": "AppGwSslPolicy20170401S"
+                }
+              ]
+            },
+            {
+              "allof": [
+                {
+                  "field": "Microsoft.Network/applicationGateways/sslPolicy.policyType",
+                  "exists": "false"
+                },
+                {
+                  "field": "Microsoft.Network/applicationGateways/sslPolicy.policyName",
+                  "exists": "false"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "then": {
+      "effect": "audit"
+    }
+  },
+  "parameters": {}
+}

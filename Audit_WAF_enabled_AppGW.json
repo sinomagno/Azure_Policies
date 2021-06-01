@@ -1,0 +1,43 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Network/applicationGateways"
+        },
+        {
+          "anyof": [
+            {
+              "field": "Microsoft.Network/applicationGateways/webApplicationFirewallConfiguration",
+              "exists": "false"
+            },
+            {
+              "field": "Microsoft.Network/applicationGateways/firewallPolicy",
+              "exists": "false"
+            }
+          ]
+        }
+      ]
+    },
+    "then": {
+      "effect": "[parameters('effect')]"
+    }
+  },
+  "parameters": {
+    "effect": {
+      "type": "String",
+      "metadata": {
+        "displayName": "Effect",
+        "description": "Enable or disable the execution of the policy"
+      },
+      "allowedValues": [
+        "Audit",
+        "Deny",
+        "Disabled"
+      ],
+      "defaultValue": "Audit"
+    }
+  }
+}
